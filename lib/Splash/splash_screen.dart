@@ -85,7 +85,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 52,
                 child: ElevatedButton(
                   onPressed: () {
-                    print("Login button pressed");
+                    // print("Login button pressed");
+                    Navigator.of(context).pushNamed("/login_screen");
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.cyan.shade600,
@@ -112,7 +113,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 52,
                 child: TextButton(
                   onPressed: () {
-                    print("Sign up button pressed");
+                    // print("Sign up button pressed");
+                     Navigator.of(context).pushNamed("/sign_up_screen");
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.green.shade700,
