@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.drive_safe.app-mergeDebugResources-31:/values-lv/values-lv.xml",
+            "outputFile": "com.drivesafe.app-mergeDebugResources-32:/values-lv/values-lv.xml",
             "map": [
                 {
-                    "source": "/Users/ramadugudhanush/.gradle/caches/8.10.2/transforms/197acf98894dab768c6955a81ac67a6a/transformed/jetified-play-services-basement-18.3.0/res/values-lv/values.xml",
+                    "source": "/Users/ramadugudhanush/.gradle/caches/8.10.2/transforms/31465fcd8263bf5de713538137223338/transformed/jetified-play-services-basement-18.3.0/res/values-lv/values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/ramadugudhanush/.gradle/caches/8.10.2/transforms/ad2b3df54d3079cea81e79983573f45c/transformed/core-1.13.1/res/values-lv/values-lv.xml",
+                    "source": "/Users/ramadugudhanush/.gradle/caches/8.10.2/transforms/51762e1b258dba7060fe2ba9ff8b5614/transformed/core-1.13.1/res/values-lv/values-lv.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

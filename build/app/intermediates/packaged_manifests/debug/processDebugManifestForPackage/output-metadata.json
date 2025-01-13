@@ -4,7 +4,7 @@
     "type": "PACKAGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "com.example.drive_safe",
+  "applicationId": "com.drivesafe.app",
   "variantName": "debug",
   "elements": [
     {

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="gcm_defaultSenderId" translatable="false">25435559338</string>
+    <string name="google_api_key" translatable="false">AIzaSyBhuz6Bu-JXe1ND4qt-SOFV0FeH8esSico</string>
+    <string name="google_app_id" translatable="false">1:25435559338:android:47cd18608e7a362d34c7d3</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBhuz6Bu-JXe1ND4qt-SOFV0FeH8esSico</string>
+    <string name="google_storage_bucket" translatable="false">drive-safe-425e6.firebasestorage.app</string>
+    <string name="project_id" translatable="false">drive-safe-425e6</string>
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         
         <item name="android:windowBackground">@drawable/launch_background</item>

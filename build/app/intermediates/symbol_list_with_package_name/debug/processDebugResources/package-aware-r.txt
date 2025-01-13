@@ -1,4 +1,4 @@
-com.example.drive_safe
+com.drivesafe.app
 anim fragment_fast_out_extra_slow_in
 animator fragment_close_enter
 animator fragment_close_exit
@@ -207,6 +207,12 @@ string call_notification_incoming_text
 string call_notification_ongoing_text
 string call_notification_screening_text
 string common_google_play_services_unknown_issue
+string gcm_defaultSenderId
+string google_api_key
+string google_app_id
+string google_crash_reporting_api_key
+string google_storage_bucket
+string project_id
 string status_bar_notification_info_overflow
 style LaunchTheme
 style NormalTheme

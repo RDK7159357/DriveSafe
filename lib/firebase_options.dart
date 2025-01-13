@@ -48,17 +48,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCxKr3hafDgdTHpa9fTRRTuR9cH7bQZSQc',
-    appId: '1:25435559338:web:ff26cf073149907534c7d3',
+    appId: '1:25435559338:web:0f2305b7944c17ed34c7d3',
     messagingSenderId: '25435559338',
     projectId: 'drive-safe-425e6',
     authDomain: 'drive-safe-425e6.firebaseapp.com',
     storageBucket: 'drive-safe-425e6.firebasestorage.app',
-    measurementId: 'G-MX6ZW1P9BZ',
+    measurementId: 'G-VWMBPMLWJE',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBhuz6Bu-JXe1ND4qt-SOFV0FeH8esSico',
-    appId: '1:25435559338:android:55f6c2d3ba4487e234c7d3',
+    appId: '1:25435559338:android:47cd18608e7a362d34c7d3',
     messagingSenderId: '25435559338',
     projectId: 'drive-safe-425e6',
     storageBucket: 'drive-safe-425e6.firebasestorage.app',
@@ -66,10 +66,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCv_SSLXhGK6q45uUb7-UkgIATWH-F0-mQ',
-    appId: '1:25435559338:ios:0ebf97c44e685c4c34c7d3',
+    appId: '1:25435559338:ios:fa0f13208a8d175f34c7d3',
     messagingSenderId: '25435559338',
     projectId: 'drive-safe-425e6',
     storageBucket: 'drive-safe-425e6.firebasestorage.app',
     iosBundleId: 'com.example.driveSafe',
   );
+
 }

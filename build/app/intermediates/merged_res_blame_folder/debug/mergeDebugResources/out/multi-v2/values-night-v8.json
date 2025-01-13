@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.drive_safe.app-mergeDebugResources-31:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.drivesafe.app-mergeDebugResources-32:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
                     "source": "/Users/ramadugudhanush/Flutter projects/Exceed Project/drive_safe/DriveSafe/android/app/src/main/res/values-night/styles.xml",

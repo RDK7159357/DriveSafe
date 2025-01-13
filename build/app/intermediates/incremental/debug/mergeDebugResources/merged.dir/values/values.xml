@@ -154,6 +154,12 @@
     <string name="call_notification_ongoing_text">Ongoing call</string>
     <string name="call_notification_screening_text">Screening an incoming call</string>
     <string name="common_google_play_services_unknown_issue"><ns1:g id="app_name">%1$s</ns1:g> is having trouble with Google Play services. Please try again.</string>
+    <string name="gcm_defaultSenderId" translatable="false">25435559338</string>
+    <string name="google_api_key" translatable="false">AIzaSyBhuz6Bu-JXe1ND4qt-SOFV0FeH8esSico</string>
+    <string name="google_app_id" translatable="false">1:25435559338:android:47cd18608e7a362d34c7d3</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBhuz6Bu-JXe1ND4qt-SOFV0FeH8esSico</string>
+    <string name="google_storage_bucket" translatable="false">drive-safe-425e6.firebasestorage.app</string>
+    <string name="project_id" translatable="false">drive-safe-425e6</string>
     <string name="status_bar_notification_info_overflow">999+</string>
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         
