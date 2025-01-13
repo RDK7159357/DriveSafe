@@ -1,11 +1,10 @@
-import 'dart:typed_data';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart'; // For accelerometer data
 import 'package:camera/camera.dart'; // For camera functionality
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -15,9 +14,9 @@ class _HomeScreenState extends State<HomeScreen> {
   late List<CameraDescription> cameras;
   CameraController? cameraController;
   bool _isDetecting = false;
-  String _predictedLabel = "";
+  final String _predictedLabel = "";
   double _acceleration = 0.0; // To track accelerometer data
-  double _speed = 0.0; // Vehicle speed (mock for now, later from sensors)
+  final double _speed = 0.0; // Vehicle speed (mock for now, later from sensors)
   String _roadSignSpeedLimit = "60"; // Mocked road sign speed limit (replace with actual detection logic)
 
   // Smoothing variables for accelerometer data
