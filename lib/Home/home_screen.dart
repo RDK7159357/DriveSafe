@@ -5,7 +5,7 @@ import 'package:sensors_plus/sensors_plus.dart'; // For accelerometer data
 import 'package:camera/camera.dart'; // For camera functionality
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
