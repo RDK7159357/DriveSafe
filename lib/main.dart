@@ -1,8 +1,8 @@
-import 'package:drive_safe/Home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'Splash/splash_screen.dart';
 import 'Sign_up/sign_up_screen.dart';
 import 'Login/login_screen.dart';
+import 'Home/home_screen.dart';
 void main() {
   runApp(const MyApp());
 }

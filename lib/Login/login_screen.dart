@@ -23,25 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        // extendBodyBehindAppBar: true,
-        // appBar: AppBar(
-        //   title: const Text(
-        //     "Login",
-        //     style: TextStyle(
-        //       fontWeight: FontWeight.w600,
-        //       fontSize: 24,
-              
-        //     ),
-        //   ),
-        //   centerTitle: true,
-        //   backgroundColor: Colors.cyan.shade600.withOpacity(0.8),
-        //   elevation: 0,
-        //   shape: const RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.vertical(
-        //       bottom: Radius.circular(20),
-        //     ),
-        //   ),
-        // ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -137,7 +118,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 52,
                     child: ElevatedButton(
                       onPressed: () {
-                        // print("Login button pressed");
                         Navigator.of(context).pushNamed("/home_screen");
                       },
                       style: ElevatedButton.styleFrom(
@@ -175,6 +155,87 @@ class _LoginScreenState extends State<LoginScreen> {
                         decoration: TextDecoration.underline,
                       ),
                     ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    "Or log in with",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 50,
+                        height: 50,
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.green.shade700),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            // Add Google login logic here
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Image.asset(
+                              'assets/icons/google.png',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 50,
+                        height: 50,
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.green.shade700),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            // Add Twitter login logic here
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Image.asset(
+                              'assets/icons/twitter.png',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 50,
+                        height: 50,
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.green.shade700),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            // Add Facebook login logic here
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Image.asset(
+                              'assets/icons/facebook.png',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 40),
                 ],
