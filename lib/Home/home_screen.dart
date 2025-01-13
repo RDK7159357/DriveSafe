@@ -5,7 +5,7 @@ import 'package:sensors_plus/sensors_plus.dart'; // For accelerometer data
 import 'package:camera/camera.dart'; // For camera functionality
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -77,35 +77,65 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.cyan.shade700,
-          title: Text(
-            "Crash Detected",
-            style: TextStyle(color: Colors.white),
-          ),
-          content: Text(
-            "The vehicle has experienced a significant impact.",
-            style: TextStyle(color: Colors.white),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() {
-                  _isCrashPopupVisible = false; // Reset the flag after closing the popup
-                });
-              },
-              child: Text(
-                "OK",
-                style: TextStyle(color: Colors.green.shade700),
+  context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.cyan.shade700,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0), // Rounded corners for the popup
+      ),
+      contentPadding: const EdgeInsets.fromLTRB(18.0, 20.0, 18.0, 10.0), // Add padding for the blue area
+      insetPadding: const EdgeInsets.all(10.0), // Ensure the popup is well-positioned
+      content: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.green, width: 2.0), // Green border
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        padding: const EdgeInsets.all(16.0), // Padding inside the green border
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Crash Detected",
+              style: TextStyle(color: Colors.white, fontSize: 18.0),
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              "The vehicle has experienced a significant impact.",
+              style: TextStyle(color: Colors.white, fontSize: 16.0),
+            ),
+            const SizedBox(height: 20.0),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    _isCrashPopupVisible = false; // Reset the flag after closing the popup
+                  });
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green, // Green button background
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0), // Rounded button corners
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Padding inside the button
+                ),
+                child: Text(
+                  "OK",
+                  style: TextStyle(color: Colors.white, fontSize: 16.0), // White text for the button
+                ),
               ),
             ),
           ],
-        );
-      },
+        ),
+      ),
     );
+  },
+);
+
+
+
   }
 
   // Show overspeeding popup
