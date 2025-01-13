@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:drive_safe/auth.dart'; // Assuming this is your custom auth class
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,6 +9,38 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> signIn() async {
+    try {
+      String email = emailController.text;
+      String password = passwordController.text;
+
+      if (email.isEmpty || password.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please fill in both fields')),
+        );
+        return;
+      }
+
+      await Auth().signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Logged in successfully')),
+      );
+
+      Navigator.of(context).pushReplacementNamed("/home_screen");
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,13 +71,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.bold,
                       color: Colors.cyan.shade700,
                       letterSpacing: 1.2,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black26,
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -58,19 +84,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Email",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.cyan.shade700,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
+                  // Email field
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       hintText: "Enter your email",
                       filled: true,
@@ -85,19 +101,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Password",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.cyan.shade700,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
+                  // Password field
                   TextField(
+                    controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       hintText: "Enter your password",
@@ -113,20 +119,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
+                  // Login button
                   SizedBox(
                     width: double.infinity,
                     height: 52,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed("/home_screen");
-                      },
+                      onPressed: signIn,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.cyan.shade600,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        elevation: 5,
-                        shadowColor: Colors.cyan.withOpacity(0.4),
                       ),
                       child: const Text(
                         "Login",
@@ -140,13 +143,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  // Sign up redirect
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed("/sign_up_screen");
                     },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.green.shade700,
-                    ),
                     child: const Text(
                       "Don't have an account? Sign up",
                       style: TextStyle(
@@ -156,88 +157,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  Text(
-                    "Or log in with",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.green.shade700),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            // Add Google login logic here
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Image.asset(
-                              'assets/icons/google.png',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.green.shade700),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            // Add Twitter login logic here
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Image.asset(
-                              'assets/icons/twitter.png',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.green.shade700),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            // Add Facebook login logic here
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Image.asset(
-                              'assets/icons/facebook.png',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 40),
                 ],
               ),
             ),

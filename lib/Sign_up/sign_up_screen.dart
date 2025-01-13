@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:drive_safe/auth.dart'; // Assuming this is your custom auth class
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -8,6 +9,40 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> signUp() async {
+    try {
+      String name = nameController.text;
+      String email = emailController.text;
+      String password = passwordController.text;
+
+      if (name.isEmpty || email.isEmpty || password.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please fill in all fields')),
+        );
+        return;
+      }
+
+      await Auth().createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User created successfully')),
+      );
+
+      Navigator.of(context).pushReplacementNamed("/home_screen");
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
       child: Scaffold(
-        backgroundColor: Colors.transparent, // Make Scaffold background transparent
+        backgroundColor: Colors.transparent,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -38,13 +73,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       fontWeight: FontWeight.bold,
                       color: Colors.cyan.shade700,
                       letterSpacing: 1.2,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black26,
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -58,20 +86,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  // Name Field
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Name",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.cyan.shade700,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
+                  // Name field
                   TextField(
+                    controller: nameController,
                     decoration: InputDecoration(
                       hintText: "Enter your name",
                       filled: true,
@@ -86,20 +103,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  // Email Field
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Email",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.cyan.shade700,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
+                  // Email field
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       hintText: "Enter your email",
                       filled: true,
@@ -114,20 +120,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  // Password Field
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Password",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.cyan.shade700,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
+                  // Password field
                   TextField(
+                    controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       hintText: "Enter your password",
@@ -143,21 +138,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  // Sign-Up Button
+                  // Sign Up button
                   SizedBox(
                     width: double.infinity,
                     height: 52,
                     child: ElevatedButton(
-                      onPressed: () {
-                        print("Sign Up button pressed");
-                      },
+                      onPressed: signUp,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.cyan.shade600,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        elevation: 5,
-                        shadowColor: Colors.cyan.withOpacity(0.4),
                       ),
                       child: const Text(
                         "Sign Up",
@@ -171,15 +162,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // Login Redirect
+                  // Login redirect
                   TextButton(
                     onPressed: () {
-                      // print("Navigate to Login Screen");
                       Navigator.of(context).pushNamed("/login_screen");
                     },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.green.shade700,
-                    ),
                     child: const Text(
                       "Already have an account? Login",
                       style: TextStyle(
@@ -189,7 +176,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
                 ],
               ),
             ),
