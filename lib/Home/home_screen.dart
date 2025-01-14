@@ -1,10 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:sensors_plus/sensors_plus.dart'; // For accelerometer data
+import 'package:sensors_plus/sensors_plus.dart'; // For accelerometer and gyroscope
+import 'package:geolocator/geolocator.dart'; // For GPS speed tracking
 import 'package:camera/camera.dart'; // For camera functionality
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -14,24 +15,24 @@ class _HomeScreenState extends State<HomeScreen> {
   late List<CameraDescription> cameras;
   CameraController? cameraController;
   bool _isDetecting = false;
-  final String _predictedLabel = "";
-  double _acceleration = 0.0; // To track accelerometer data
-  final double _speed = 0.0; // Vehicle speed (mock for now, later from sensors)
-  String _roadSignSpeedLimit = "60"; // Mocked road sign speed limit (replace with actual detection logic)
+  double _acceleration = 0.0; // Current acceleration
+  double _speed = 0.0; // Current speed from GPS
+  String _roadSignSpeedLimit = "60"; // Mock speed limit detection
+  bool _isCrashPopupVisible = false;
 
-  // Smoothing variables for accelerometer data
-  double _prevAcceleration = 0.0; // Previous acceleration
-  static const double _accelerationThreshold = 5.0; // Threshold for crash detection
-  bool _isCrashPopupVisible = false; // Flag to track crash popup visibility
+  // Threshold values for realistic crash detection
+  static const double _gForceThreshold = 8.0; // G-force threshold for crash
+  static const double _speedThreshold = 20.0; // Minimum speed in m/s (72 km/h) for crash detection
 
   @override
   void initState() {
     super.initState();
     initializeCamera();
-    initializeAccelerometer();
+    initializeSensors();
+    startGPS();
   }
 
-  // Initialize camera
+  // Initialize the camera
   Future<void> initializeCamera() async {
     cameras = await availableCameras();
     cameraController = CameraController(
@@ -39,140 +40,95 @@ class _HomeScreenState extends State<HomeScreen> {
       ResolutionPreset.high,
     );
     await cameraController?.initialize();
-
-    // Start the image stream for road sign detection (not needed in this case, can be left as mock)
-    cameraController?.startImageStream((CameraImage image) async {
-      if (!_isDetecting) {
-        _isDetecting = true;
-        // Road sign detection is not done here, so no processing
-        _isDetecting = false;
-      }
-    });
     setState(() {});
   }
 
-  // Initialize the accelerometer
-  void initializeAccelerometer() {
+  // Initialize accelerometer and gyroscope for crash detection
+  void initializeSensors() {
     accelerometerEvents.listen((AccelerometerEvent event) {
-      // Calculate acceleration magnitude and apply smoothing
-      double acceleration = sqrt(event.x * event.x + event.y * event.y + event.z * event.z) - 9.8;
-      double smoothedAcceleration = (acceleration + _prevAcceleration) / 2.0; // Smoothing filter
+      // Calculate G-force
+      double gForce = sqrt(event.x * event.x + event.y * event.y + event.z * event.z) / 9.8;
+
       setState(() {
-        _acceleration = smoothedAcceleration;
-        _prevAcceleration = smoothedAcceleration;
+        _acceleration = gForce;
       });
 
-      // Trigger crash detection based on acceleration threshold
-      if (_acceleration > _accelerationThreshold && !_isCrashPopupVisible) { // Check if popup is already shown
+      // Detect crash if thresholds are exceeded
+      if (_acceleration > _gForceThreshold && _speed > _speedThreshold && !_isCrashPopupVisible) {
         showCrashPopup();
       }
+    });
+  }
+
+  // Start GPS for speed tracking
+  void startGPS() {
+    Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10,
+      ),
+    ).listen((Position position) {
+      setState(() {
+        _speed = position.speed; // Speed in m/s
+      });
     });
   }
 
   // Show crash detection popup
   void showCrashPopup() {
     setState(() {
-      _isCrashPopupVisible = true; // Set the flag to true
+      _isCrashPopupVisible = true;
     });
 
-    showDialog(
-  context: context,
-  builder: (BuildContext context) {
-    return AlertDialog(
-      backgroundColor: Colors.cyan.shade700,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0), // Rounded corners for the popup
-      ),
-      contentPadding: const EdgeInsets.fromLTRB(18.0, 20.0, 18.0, 10.0), // Add padding for the blue area
-      insetPadding: const EdgeInsets.all(10.0), // Ensure the popup is well-positioned
-      content: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.green, width: 2.0), // Green border
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        padding: const EdgeInsets.all(16.0), // Padding inside the green border
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "Crash Detected",
-              style: TextStyle(color: Colors.white, fontSize: 18.0),
-            ),
-            const SizedBox(height: 10.0),
-            Text(
-              "The vehicle has experienced a significant impact.",
-              style: TextStyle(color: Colors.white, fontSize: 16.0),
-            ),
-            const SizedBox(height: 20.0),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  setState(() {
-                    _isCrashPopupVisible = false; // Reset the flag after closing the popup
-                  });
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.green, // Green button background
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0), // Rounded button corners
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Padding inside the button
-                ),
-                child: Text(
-                  "OK",
-                  style: TextStyle(color: Colors.white, fontSize: 16.0), // White text for the button
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  },
-);
-
-
-
-  }
-
-  // Show overspeeding popup
-  void showOverspeedingPopup() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.green.shade700,
-          title: Text(
-            "Overspeeding Warning",
-            style: TextStyle(color: Colors.white),
+          backgroundColor: Colors.cyan.shade700,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
           ),
-          content: Text(
-            "You are exceeding the speed limit of $_roadSignSpeedLimit km/h.",
-            style: TextStyle(color: Colors.white),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                "OK",
-                style: TextStyle(color: Colors.lightGreen.shade600),
+          contentPadding: const EdgeInsets.all(16.0),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Crash Detected",
+                style: TextStyle(color: Colors.white, fontSize: 18.0),
               ),
-            ),
-          ],
+              const SizedBox(height: 10.0),
+              Text(
+                "Significant impact detected at a speed of ${(_speed * 3.6).toStringAsFixed(1)} km/h.",
+                style: TextStyle(color: Colors.white, fontSize: 16.0),
+              ),
+              const SizedBox(height: 20.0),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      _isCrashPopupVisible = false;
+                    });
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  ),
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
-  }
-
-  // Handle mock road sign speed limit detection (this could be improved with actual sign detection)
-  void detectSpeedLimitFromCamera() {
-    // This would normally be an ML model or other logic
-    // For now, we'll just mock the detection based on the time
-    setState(() {
-      _roadSignSpeedLimit = (Random().nextInt(30) + 30).toString(); // Random speed limit between 30 and 60
-    });
   }
 
   @override
@@ -206,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(8.0),
                 color: Colors.white.withOpacity(0.8),
                 child: Text(
-                  "Predicted Speed Limit: $_roadSignSpeedLimit km/h", // Display the mocked speed limit
+                  "Predicted Speed Limit: $_roadSignSpeedLimit km/h\nCurrent Speed: ${(_speed * 3.6).toStringAsFixed(1)} km/h",
                   style: const TextStyle(fontSize: 16, color: Colors.black),
                 ),
               ),
